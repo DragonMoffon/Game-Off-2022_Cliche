@@ -1,0 +1,14 @@
+{
+  "Buttons": {
+    "ATTACK": ["MOUSE_LEFT_CLICK", "Z"],
+    "SPECIAL": ["MOUSE_RIGHT_CLICK", "X"],
+    "JUMP": ["SPACE"],
+    "SPRINT": ["LSHIFT"],
+    "CROUCH": ["LCTRL"],
+    "ESCAPE": ["ESCAPE"]
+  },
+  "Axes": {
+    "HORIZONTAL": {"+": ["D", "RIGHT"], "-": ["A", "LEFT"]},
+    "VERTICAL": {"+": ["W", "UP"], "-": ["S", "DOWN"]}
+  }
+}

@@ -1,1 +1,1 @@
-arcade 2.7.1
+arcade==2.7.1.dev2
