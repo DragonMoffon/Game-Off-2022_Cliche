@@ -16,7 +16,7 @@ class SplashView(View):
 
     def on_update(self, delta_time: float):
         if Clock.frame - 512 < 512:
-            self._splash_sprite.alpha = sin(pi * (Clock.frame) / 512)**2 * 255
+            self._splash_sprite.alpha = sin(pi * Clock.frame / 512)**2 * 255
         else:
             self.window.show_view(ScreenSizeView())
         if Clock.frame == 512:

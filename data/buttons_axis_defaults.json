@@ -8,7 +8,7 @@
     "ESCAPE": ["ESCAPE"]
   },
   "Axes": {
-    "HORIZONTAL": {"+": ["D", "RIGHT"], "-": ["A", "LEFT"]},
-    "VERTICAL": {"+": ["W", "UP"], "-": ["S", "DOWN"]}
+    "HORIZONTAL": {"+": ["D", "RIGHT", "MOTION_RIGHT"], "-": ["A", "LEFT", "MOTION_LEFT"]},
+    "VERTICAL": {"+": ["W", "UP", "MOTION_UP"], "-": ["S", "DOWN", "MOTION_DOWN"]}
   }
 }
