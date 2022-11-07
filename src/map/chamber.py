@@ -7,7 +7,7 @@ class Chamber:
 
     def __init__(self, chamber_src: str):
         self._path = chamber_src
-        self._chamber_map = tilemap.load_tilemap(chamber_src)
+        self._chamber_map = tilemap.load_tilemap(chamber_src, use_spatial_hash=True)
 
     def draw_chamber(self):
         for sprite_list in self._chamber_map.sprite_lists.values():

@@ -10,3 +10,7 @@ def lerp(a, b, t):
 
 def dist(a, b):
     return sqrt((a[0] - b[0])**2 + (a[1] - b[1])**2)
+
+
+def round_point(a):
+    return round(a[0]), round(a[1])
