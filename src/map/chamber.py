@@ -1,8 +1,6 @@
-from sys import getsizeof
-
 from typing import Dict, Tuple
 
-from arcade import tilemap, Sprite
+from arcade import tilemap, Sprite, SpriteList
 
 # TODO: Build smarter chamber class
 
@@ -27,6 +25,10 @@ class Chamber:
                     _layer_sprites[self._chamber_map.get_cartesian(sprite.center_x, sprite.center_y)] = sprite
             else:
                 pass
+        _all_tiles = SpriteList(lazy=True, use_spatial_hash=True)
+        _all_tiles.extend(self._chamber_map.sprite_lists['ground'])
+        _all_tiles.extend(self._chamber_map.sprite_lists['one_way'])
+        self._chamber_map.sprite_lists["all_ground"] = _all_tiles
 
     def draw_chamber(self):
         for sprite_list in self._chamber_map.sprite_lists.values():

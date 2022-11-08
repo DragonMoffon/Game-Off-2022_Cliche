@@ -8,6 +8,8 @@ from src.player.player_hitbox import PlayerHitbox
 from src.input import Input, Button
 from src.clock import Clock
 
+from time import time
+
 # TODO: Complete Input Code and Physics integration
 
 
@@ -67,14 +69,11 @@ class PlayerCharacter:
 
         # Collisions
         self._data.on_ground = self._data.on_ciel = self._data.on_left = self._data.on_right = False
-        _chamber_ground = self._chamber.sprite_lists['ground']
-        _chamber_one_way = self._chamber.sprite_lists['one_way']
         _ground_collision = _ciel_collision = _left_collision = _right_collision = None
-
-        _all_tiles = SpriteList(lazy=True, use_spatial_hash=True)
-        _all_tiles.extend(_chamber_ground)
+        _chamber_ground = self._chamber.sprite_lists['ground']
+        _all_tiles = _chamber_ground
         if not Input.get_button("CROUCH"):
-            _all_tiles.extend(_chamber_one_way)
+            _all_tiles = self._chamber.sprite_lists['all_ground']
 
         # Collides downward
         _hit = False

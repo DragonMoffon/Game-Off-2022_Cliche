@@ -16,6 +16,8 @@ class EngineWindow(Window):
         self.game_view = PrimaryGameView()
         Input.get_button("ESCAPE").register_press_observer(self.call_close)
 
+        self._spike_count = 0
+
     def call_close(self, button: Button):
         self.close()
 
@@ -37,6 +39,7 @@ class EngineWindow(Window):
     def on_update(self, delta_time: float):
         if not Clock.frame:
             self.show_view(SplashView())
+
         Clock.tick(delta_time)
         Input.p_key_held()
 
