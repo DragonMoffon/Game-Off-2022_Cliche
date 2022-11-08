@@ -2,13 +2,51 @@ from typing import Tuple, List
 
 from arcade import Sprite
 
+from src.util import TILE_SIZE
+
 
 class PlayerData:
+    c_max_acc: float = 15.0 * TILE_SIZE
+    c_max_dec: float = 30.0 * TILE_SIZE
+    c_max_turn: float = 60.0 * TILE_SIZE
+
+    c_max_acc_air: float = 10.0 * TILE_SIZE
+    c_max_dec_air: float = 20.0 * TILE_SIZE
+    c_max_turn_air: float = 40.0 * TILE_SIZE
+
+    c_max_vel: float = 10.0 * TILE_SIZE
+    c_max_vel_sprint: float = 25.0 * TILE_SIZE
+    c_max_vel_air: float = 15.0 * TILE_SIZE
+
+    c_edge_buffer_frames: int = 8
+    c_jump_buffer_frames: int = 8
+    c_ledge_buffer_frames: int = 4
 
     def __init__(self, source: Sprite):
         self._source = source
-        self._acceleration = (0.0, 0.0)
-        self._old_position = (0.0, 0.0)
+
+        self._acceleration: Tuple[float, float] = (0.0, 0.0)
+        self._old_position: Tuple[float, float] = (0.0, 0.0)
+
+        self.direction: float = 1.0
+
+        self.on_ground = self.on_ciel = self.on_left = self.on_right = self.on_ledge = self.sliding = False
+
+        self.forgiven_edge_frames: int = 0
+        self.blocked_ledge_frames: int = 0
+
+    # SIZE PROPERTIES
+    @property
+    def scale(self):
+        return self._source.scale
+
+    @property
+    def width(self):
+        return self._source.width
+
+    @property
+    def height(self):
+        return self._source.height
 
     # POSITION PROPERTIES
     @property
@@ -100,7 +138,6 @@ class PlayerData:
         return self._old_position[0] + (self._source.right - self._source.center_x)
 
     # MOVEMENT PROPERTIES
-
     @property
     def vel(self):
         return self._source.velocity

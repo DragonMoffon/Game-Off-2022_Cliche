@@ -15,7 +15,7 @@ class PrimaryGameView(View):
 
         self._placeholder_chamber = Chamber(":assets:/tiled_maps/placeholder_map.tmj")
 
-        self._placeholder_player = PlayerCharacter(self._placeholder_chamber._chamber_map)
+        self._placeholder_player = PlayerCharacter(self._placeholder_chamber)
 
         self._placeholder_camera = Camera()
 

@@ -6,5 +6,8 @@
  </tile>
  <tile id="1">
   <image width="32" height="32" source="../textures/tiles/placeholder_one_way.png"/>
+  <objectgroup draworder="index" id="3">
+   <object id="3" x="0" y="0" width="32" height="32"/>
+  </objectgroup>
  </tile>
 </tileset>

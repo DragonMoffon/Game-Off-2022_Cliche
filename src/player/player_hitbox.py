@@ -3,7 +3,6 @@ from typing import Tuple
 from arcade import Sprite, SpriteList, SpriteSolidColor
 
 from src.player.player_data import PlayerData
-from src.map.chamber import Chamber
 
 from src.util import dist, lerp, round_point
 
@@ -16,8 +15,10 @@ class PlayerHitbox:
 
         self._horizontal_sensor = SpriteSolidColor(int(self._position.right - self._position.left), 1, (0, 255, 0))
         self._vertical_sensor = SpriteSolidColor(1, int(self._position.top - self._position.bottom), (255, 0, 0))
+        self._ledge_sensor = SpriteSolidColor(8, 8, (0, 0, 255))
 
-    def _resolve_collision(self, _old_check, _new_check, _sensor, _collision_layer):
+    def _resolve_collision(self, _old_check: Tuple[float, float], _new_check: Tuple[float, float],
+                           _sensor: Sprite, _collision_layer: SpriteList):
         _length = int(dist(_old_check, _new_check) // 32) + 1
 
         for step in range(_length + 1):
@@ -26,6 +27,7 @@ class PlayerHitbox:
             _sensor.position = round_point(_pos)
             _collisions = _sensor.collides_with_list(_collision_layer)
             if len(_collisions):
+                _collisions.sort(key=lambda sprite: sprite.center_y, reverse=True)
                 return True, _collisions[0]
         return False, None
 
@@ -45,6 +47,7 @@ class PlayerHitbox:
         _old_check = round_point((self._position.old_left-1, self._position.old_y))
         _new_check = round_point((self._position.left-1, self._position.y))
         _hit, _collision = self._resolve_collision(_old_check, _new_check, self._vertical_sensor, _collision_layer)
+
         return _hit, _collision
 
     def hit_right(self, _collision_layer: SpriteList) -> Tuple[bool, Sprite]:
@@ -52,6 +55,22 @@ class PlayerHitbox:
         _new_check = round_point((self._position.right+1, self._position.y))
         _hit, _collision = self._resolve_collision(_old_check, _new_check, self._vertical_sensor, _collision_layer)
         return _hit, _collision
+
+    def check_ledge_vertical_left(self, _collision_layer: SpriteList):
+        _old_check = round_point((self._position.old_left - 9.0, self._position.old_top + 9.0))
+        _new_check = round_point((self._position.left - 9.0, self._position.top + 9.0))
+        _ledge_hit, _ledge_collision = self._resolve_collision(_old_check, _new_check,
+                                                               self._ledge_sensor, _collision_layer)
+
+        return not _ledge_hit
+
+    def check_ledge_vertical_right(self, _collision_layer: SpriteList):
+        _old_check = round_point((self._position.old_right + 9.0, self._position.old_top + 9.0))
+        _new_check = round_point((self._position.right + 9.0, self._position.top + 9.0))
+        _ledge_hit, _ledge_collision = self._resolve_collision(_old_check, _new_check,
+                                                               self._ledge_sensor, _collision_layer)
+
+        return not _ledge_hit
 
     def debug_draw(self):
         self._horizontal_sensor.position = self._position.old_x, self._position.old_bottom-1
@@ -73,3 +92,11 @@ class PlayerHitbox:
         self._vertical_sensor.draw(pixelated=True)
         self._vertical_sensor.center_x = self._position.right+1
         self._vertical_sensor.draw(pixelated=True)
+
+        half_width = (self._position.x-self._position.left)
+        self._ledge_sensor.position = (self._position.x + (half_width + 9) * self._position.direction,
+                                       self._position.top + 9)
+        self._ledge_sensor.draw(pixelated=True)
+        self._ledge_sensor.position = (self._position.old_x + (half_width + 9) * self._position.direction,
+                                       self._position.top + 9)
+        self._ledge_sensor.draw(pixelated=True)

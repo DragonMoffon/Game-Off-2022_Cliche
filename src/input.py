@@ -33,6 +33,12 @@ class Button:
     def __bool__(self):
         return bool(self._pressed)
 
+    def __mul__(self, other: float) -> float:
+        return self._pressed * other
+
+    def __rmul__(self, other: float) -> float:
+        return self._pressed * other
+
     @property
     def pressed(self):
         return self._pressed
@@ -135,6 +141,15 @@ class Axis:
     # de-register observers
     def deregister_observer(self, observer_call):
         self._observers.discard(observer_call)
+
+    def __mul__(self, other):
+        return self._value * other
+
+    def __rmul__(self, other):
+        return self._value * other
+
+    def __bool__(self):
+        return bool(self._value)
 
 
 class InputPoll:

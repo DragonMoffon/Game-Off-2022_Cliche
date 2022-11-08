@@ -16,6 +16,14 @@
                 "y": 3402.6666666666665
             }
         },
+        "placeholder_map.tmx": {
+            "scale": 0.33,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 2269.6969696969695,
+                "y": 1730.3030303030303
+            }
+        },
         "placeholder_tileset.tsx": {
             "dynamicWrapping": true,
             "scaleInDock": 1,
@@ -33,9 +41,11 @@
         "placeholder_map.tmj"
     ],
     "project": "Game-Off-2022_Cliche.tiled-project",
+    "property.type": "bool",
     "recentFiles": [
-        "placeholder_map.tmj",
-        "placeholder_tileset.tsx"
+        "placeholder_tileset.tsx",
+        "placeholder_map.tmx",
+        "placeholder_map.tmj"
     ],
     "tileset.lastUsedFormat": "tsx",
     "tileset.type": 1

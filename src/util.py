@@ -14,3 +14,6 @@ def dist(a, b):
 
 def round_point(a):
     return round(a[0]), round(a[1])
+
+
+TILE_SIZE: float = 32.0

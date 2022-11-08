@@ -1,6 +1,6 @@
 # GAME OFF 2022: Cliché
 The game is inspired by the cliché ***Feast Fit For the Gods*** \
-It is a momentum platformer inspired by movement fps and hollow knight.
+It is a momentum platformer inspired by Super Meat Boy and Hollow Kenight.
 
 Hunt the 3 great beasts and make a mighty feast for the pagan gods.
 

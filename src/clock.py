@@ -23,6 +23,9 @@ class GlobalClock:
     def const_length(self, const_time: float):
         return self._const_time - const_time
 
+    def frame_length(self, frame: int):
+        return self._frame_time - frame
+
     def set_tick_speed(self, speed: float):
         self._tick_speed = speed
 
