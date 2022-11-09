@@ -9,11 +9,11 @@
     "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
         "placeholder_map.tmj": {
-            "scale": 0.75,
+            "scale": 0.33,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 925.3333333333331,
-                "y": 3402.6666666666665
+                "x": 1400,
+                "y": 2045.4545454545455
             }
         },
         "placeholder_map.tmx": {
@@ -30,8 +30,8 @@
             "scaleInEditor": 1
         }
     },
-    "last.exportedFilePath": "C:/Users/Playtech/Desktop/Code/Python/Game-Off-2022_Cliche/resources/tiled_maps",
-    "last.imagePath": "C:/Users/Playtech/Desktop/Code/Python/Game-Off-2022_Cliche/resources/textures/tiles",
+    "last.exportedFilePath": "C:/Users/happy/Programing/Game-Off-2022_Cliche/resources/tiled_maps",
+    "last.imagePath": "C:/Users/happy/Programing/Game-Off-2022_Cliche/resources/textures/tiles",
     "map.height": 40,
     "map.lastUsedExportFilter": "JSON map files (*.tmj *.json)",
     "map.lastUsedFormat": "tmx",
@@ -43,9 +43,9 @@
     "project": "Game-Off-2022_Cliche.tiled-project",
     "property.type": "bool",
     "recentFiles": [
+        "placeholder_map.tmj",
         "placeholder_tileset.tsx",
-        "placeholder_map.tmx",
-        "placeholder_map.tmj"
+        "placeholder_map.tmx"
     ],
     "tileset.lastUsedFormat": "tsx",
     "tileset.type": 1

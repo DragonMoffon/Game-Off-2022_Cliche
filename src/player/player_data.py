@@ -30,7 +30,7 @@ class PlayerData:
 
         self.direction: float = 1.0
 
-        self.on_ground = self.on_ciel = self.on_left = self.on_right = self.on_ledge = self.sliding = False
+        self.on_ground = self.on_ciel = self.on_left = self.on_right = self.at_ledge = self.sliding = False
 
         self.forgiven_edge_frames: int = 0
         self.blocked_ledge_frames: int = 0

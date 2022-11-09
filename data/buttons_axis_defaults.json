@@ -7,7 +7,7 @@
     "SPECIAL": ["MOUSE_RIGHT_CLICK", "X"],
     "JUMP": ["SPACE"],
     "SPRINT": ["LSHIFT"],
-    "CROUCH": ["LCTRL"],
+    "CROUCH": ["LCTRL", "S"],
     "ESCAPE": ["ESCAPE"]
   },
   "Axes": {
