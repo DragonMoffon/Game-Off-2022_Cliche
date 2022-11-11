@@ -2,3 +2,5 @@
 \libs
 .tiled-session
 \bin
+\__pychache__
+
