@@ -1,6 +1,6 @@
 .idea
 \libs
-.tiled-session
+*.tiled-session
 \bin
-\__pychache__
+*\__pychache__
 
