@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.9" tiledversion="1.9.2" name="placeholder_tileset" tilewidth="32" tileheight="32" tilecount="3" columns="0">
+<tileset version="1.9" tiledversion="1.9.1" name="placeholder_tileset" tilewidth="32" tileheight="32" tilecount="5" columns="0">
  <grid orientation="orthogonal" width="1" height="1"/>
  <tile id="0">
   <image width="32" height="32" source="../textures/tiles/placeholder_tile.png"/>
@@ -12,5 +12,11 @@
  </tile>
  <tile id="2">
   <image width="32" height="32" source="../textures/tiles/placeholder_spike.png"/>
+ </tile>
+ <tile id="3">
+  <image width="32" height="32" source="../textures/tiles/placeholder_background.png"/>
+ </tile>
+ <tile id="4">
+  <image width="32" height="32" source="../textures/tiles/placeholder_transition_tile.png"/>
  </tile>
 </tileset>

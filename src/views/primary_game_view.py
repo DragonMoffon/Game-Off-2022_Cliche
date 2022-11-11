@@ -28,8 +28,12 @@ class PrimaryGameView(View):
     def on_update(self, delta_time: float):
         self._placeholder_player.update()
 
-        self._placeholder_camera.move_to((self._placeholder_player.center_x - self.window.width // 2,
-                                          self._placeholder_player.center_y - self.window.height // 2),
+        _target_pos = [self._placeholder_player.center_x - self.window.width // 2,
+                       self._placeholder_player.center_y - self.window.height // 2]
+        _target_pos[0] = max(min(_target_pos[0], self._placeholder_chamber.px_width-self.window.width), 0.0)
+        _target_pos[1] = max(min(_target_pos[1], self._placeholder_chamber.px_height-self.window.height), 0.0)
+
+        self._placeholder_camera.move_to(tuple(_target_pos),
                                          0.05)
         self._placeholder_camera.update()
 

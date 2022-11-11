@@ -38,6 +38,14 @@ class Chamber:
     def sprite_lists(self):
         return self._chamber_map.sprite_lists
 
+    @property
+    def px_width(self):
+        return self._chamber_map.width * 32.0
+
+    @property
+    def px_height(self):
+        return self._chamber_map.height * 32.0
+
     def __getitem__(self, items: Tuple):
         if isinstance(items[0], tuple):
             _sprites = []

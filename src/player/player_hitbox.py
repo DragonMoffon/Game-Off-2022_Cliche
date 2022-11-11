@@ -17,6 +17,12 @@ class PlayerHitbox:
         self._vertical_sensor = SpriteSolidColor(1, int(self._position.top - self._position.bottom), (255, 0, 0))
         self._ledge_sensor = SpriteSolidColor(8, 8, (0, 0, 255))
 
+    def hit_spike(self, _collision_layer: SpriteList):
+        return self._source.collides_with_list(_collision_layer)
+
+    def hit_spawn_zone(self, _collision_layer: SpriteList):
+        return self._source.collides_with_list(_collision_layer)
+
     def _resolve_collision(self, _old_check: Tuple[float, float], _new_check: Tuple[float, float],
                            _sensor: Sprite, _collision_layer: SpriteList):
         _length = int(dist(_old_check, _new_check) // 32) + 1

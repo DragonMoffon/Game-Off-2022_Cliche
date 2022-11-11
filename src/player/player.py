@@ -25,13 +25,15 @@ class PlayerCharacter:
         # TODO: make actual sprite and setup animations
 
         self._sprite = Sprite(texture=load_texture(":assets:/textures/characters/placeholder_player.png"))
+        self._sprite.set_hit_box(((-16, -32), (-16, 32), (16, 32), (16, -32)))
         self._data = PlayerData(self._sprite)
         self._data.bottom = 192.0
         self._data.left = 128.0
 
+        self._states = PlayerStateSwitch(self)
+
         self._hitbox = PlayerHitbox(self._sprite, self._data)
         self._physics = PlayerPhysics(self)
-        self._states = PlayerStateSwitch(self)
 
         # TODO: remove placeholder variables
 
@@ -40,31 +42,17 @@ class PlayerCharacter:
         Input.get_axis("HORIZONTAL").register_observer(self.horizontal_movement)
         Input.get_button("JUMP").register_press_observer(self.jump)
         Input.get_button("CROUCH").register_press_observer(self.crouch)
+        Input.get_button("RESET").register_press_observer(self.reset)
+
+    def reset(self, _button: Button):
+        if _button:
+            self._data.reset_to_ground()
 
     def update(self):
-        # Calculate Acceleration
-        if Input.get_button("SPRINT"):
-            _target_velocity_x = (max(abs(self._data.vel_x), self._data.c_max_vel_sprint)
-                                  * self._data.direction * bool(Input.get_axis("HORIZONTAL")))
-        else:
-            _target_velocity_x = self._data.c_max_vel * Input.get_axis("HORIZONTAL")
+        # Update based on the state
+        self._states.state_update()
 
-        _diff = _target_velocity_x - self._data.vel_x
-        _acceleration = self._data.c_max_dec
-        if _target_velocity_x:
-            if self._data.vel_x / _target_velocity_x < 0:
-                _acceleration = self._data.c_max_turn
-            else:
-                _acceleration = self._data.c_max_acc
-
-        _acceleration = min(abs(_diff), _acceleration * Clock.delta_time) * (_diff / abs(_diff)) if _diff else 0
-
-        self._data.vel_x += _acceleration
-
-        if not self._data.on_ground:
-            self._data.vel_y -= (1024.0 - (256.0 * (Input.get_button("JUMP") and self._data.vel_y >= 0.0))) * Clock.delta_time
-
-        # move player
+        # Move player
         self._physics.move()
 
         # Collisions
@@ -72,55 +60,43 @@ class PlayerCharacter:
         _all_tiles = self._chamber.sprite_lists['all_ground'] if not Input.get_button("CROUCH") else _ground
         self._physics.resolve_collisions((_all_tiles, _ground, _ground, _ground))
 
-        if not self._data.on_ground and self._data.forgiven_edge_frames:
-            self._data.forgiven_edge_frames -= 1
-        elif self._data.on_ground and Clock.frame_length(Input.get_button("JUMP").release_frame) <= 12:
-            self._data.vel_y = 512.0
-            self._data.forgiven_edge_frames = 0
+        _spikes = self._chamber.sprite_lists['spikes']
+        _hit_spikes = self._hitbox.hit_spike(_spikes)
+        if len(_hit_spikes):
+            self._data.reset_to_ground()
 
-        # self._data.at_ledge = False
-        # if not self._data.on_ground and self._data.vel_y <= 0.0 and not self._data.blocked_ledge_frames:
-        #     self._data.blocked_ledge_frames = 0
-        #     if (self._data.on_left and self._data.direction == -1 and
-        #             self._hitbox.check_ledge_vertical_left(_chamber_ground)):
-        #         self._data.vel_y = 0.0
-        #         self._data.at_ledge = True
-        #         self._data.top = _left_collision.top
-        #     elif (self._data.on_right and self._data.direction == 1 and
-        #           self._hitbox.check_ledge_vertical_right(_chamber_ground)):
-        #         self._data.vel_y = 0.0
-        #         self._data.at_ledge = True
-        #         self._data.top = _right_collision.top
-        # elif self._data.blocked_ledge_frames:
-        #     self._data.blocked_ledge_frames -= 1
+        _spawn_zone = self._chamber.sprite_lists['spawn_zones']
+        _hit_zones = self._hitbox.hit_spawn_zone(_spawn_zone)
+        self._data.in_spawn_zone = False
+        if len(_hit_zones):
+            self._data.in_spawn_zone = True
 
+        # Find the next state
         self._states.find_state()
+
+        # Animate
+        self._sprite.scale_xy = [self._data.direction, 1.0]
+
+        self._states.debug_update_pos()
+
+        if self._data.on_ground and self._data.in_spawn_zone:
+            self._data.set_last_ground()
 
     def draw(self):
         self._sprite.draw(pixelated=True)
 
-        self._hitbox.debug_draw()
+        # self._hitbox.debug_draw()
+        self._sprite.draw_hit_box((255, 255, 255), 2)
+        self._states.debug_draw()
 
     def horizontal_movement(self, _value: float):
-        self._data.direction = self._data.direction if not _value else _value / abs(_value)
+        self._states.p_horizontal(_value)
 
-    def jump(self, button: Button):
-        if self._data.on_ground or self._data.forgiven_edge_frames or self._data.at_ledge:
-            self._data.vel_y = button.pressed * (512.0 + 512.0 * self._data.at_ledge * Input.get_button("SPRINT"))
-            self._data.forgiven_edge_frames = 0.0
-            self._data.blocked_ledge_frames = self._data.c_ledge_buffer_frames
-        elif self._data.on_right and not self._data.on_left:
-            self._data.vel_y = button.pressed * 512.0 * 1.5
-            self._data.vel_x = button.pressed * (-512.0 - 512.0 * Input.get_button("SPRINT"))
-        elif self._data.on_left and not self._data.on_right:
-            self._data.vel_y = button.pressed * 512.0 * 1.5
-            self._data.vel_x = button.pressed * (512.0 + 512.0 * Input.get_button("SPRINT"))
+    def jump(self, _button: Button):
+        self._states.p_jump(_button)
 
-    def crouch(self, button: Button):
-        if button and self._data.at_ledge:
-            self._data.blocked_ledge_frames = self._data.c_ledge_buffer_frames
-            self._data.vel_y = -128.0
-
+    def crouch(self, _button: Button):
+        self._states.p_crouch(_button)
 
     @property
     def center_x(self):
@@ -133,3 +109,23 @@ class PlayerCharacter:
     @property
     def position(self):
         return self._sprite.position
+
+    @property
+    def p_chamber(self):
+        return self._chamber
+
+    @property
+    def p_data(self):
+        return self._data
+
+    @property
+    def p_hitbox(self):
+        return self._hitbox
+
+    @property
+    def p_state_switch(self):
+        return self._states
+
+    @property
+    def p_physics(self):
+        return self._physics

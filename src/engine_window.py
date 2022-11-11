@@ -13,7 +13,6 @@ class EngineWindow(Window):
 
     def __init__(self):
         super().__init__(title="Game Off 2022: God Feed", update_rate=1 / 120)
-        self._background_color = (255, 255, 255)
         self.game_view = PrimaryGameView()
         Input.get_button("ESCAPE").register_press_observer(self.call_close)
 
@@ -48,7 +47,6 @@ class EngineWindow(Window):
         if DEBUG:
             while Clock.frame < 1024:
                 Clock.tick(delta_time)
-
 
     def on_draw(self):
         pass

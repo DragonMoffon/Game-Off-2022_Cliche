@@ -1,7 +1,10 @@
 import os
 from math import sqrt
 
-DEBUG = bool(int(os.environ.get("DEBUG")))
+try:
+    DEBUG = bool(int(os.environ.get("DEBUG")))
+except TypeError:
+    DEBUG = False
 
 
 def lerp(a, b, t):
