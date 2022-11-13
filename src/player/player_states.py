@@ -199,6 +199,8 @@ class JumpState(PlayerState):
         if Input.get_button("JUMP"):
             _acc_y = -self._data.c_jump_gravity * Clock.delta_time
 
+        print(_acc_y)
+
         self._data.acc = _acc_x, _acc_y
         self._data.vel_x += _acc_x
         self._data.vel_y += _acc_y
