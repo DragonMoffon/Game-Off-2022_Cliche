@@ -6,8 +6,8 @@
     "ATTACK_RIGHT": ["MOTION_LEFT"],
     "SPECIAL": ["MOUSE_RIGHT_CLICK", "X"],
     "JUMP": ["SPACE", "W", "UP"],
-    "SPRINT": ["LSHIFT"],
-    "CROUCH": ["LCTRL", "S", "DOWN"],
+    "DASH": ["LSHIFT", "RSHIFT"],
+    "CROUCH": ["LCTRL", "RCTRL", "S", "DOWN"],
     "ESCAPE": ["ESCAPE"],
     "RESET": ["R"]
   },
