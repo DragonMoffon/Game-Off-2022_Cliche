@@ -6,18 +6,18 @@ from src.util import TILE_SIZE
 
 
 class PlayerData:
-    c_max_acc: float = 35.0 * TILE_SIZE
+    c_max_acc: float = 25.0 * TILE_SIZE
     c_max_dec: float = 45.0 * TILE_SIZE
     c_max_turn: float = 60.0 * TILE_SIZE
 
-    c_max_acc_air: float = 35.0 * TILE_SIZE
+    c_max_acc_air: float = 25.0 * TILE_SIZE
     c_max_dec_air: float = 45.0 * TILE_SIZE
     c_max_turn_air: float = 60.0 * TILE_SIZE
 
     c_base_jump_speed: float = 12.0 * TILE_SIZE
     c_dash_jump_speed: float = 16.0 * TILE_SIZE
 
-    c_max_vel: float = 10.0 * TILE_SIZE
+    c_max_vel: float = 8.0 * TILE_SIZE
 
     c_jump_gravity: float = 22.0 * TILE_SIZE
     c_base_gravity: float = 32.0 * TILE_SIZE

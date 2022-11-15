@@ -92,6 +92,34 @@ class StandState(PlayerState):
             self._data.forgiven_jump_frames = 0
             return self._switch.set_state("fall")
 
+    def p_crouch(self, _button: Button):
+        if (self._data.direction < 0.0 and
+                self._source.p_hitbox.check_ledge_horizontal_left(self._source.p_chamber.sprite_lists['all_ground'])):
+            self._data.vel_x = 0.0
+            self._data.vel_y = 0.0
+
+            _target = self._source.p_hitbox.bottom_collisions[0]
+            self._data.top = _target.top
+            self._data.left = _target.left
+
+            self._data.direction = 1.0
+            self._data.at_ledge = True
+            self._switch.set_state("ledge_hold")
+        elif (self._data.direction > 0.0 and
+                self._source.p_hitbox.check_ledge_horizontal_right(self._source.p_chamber.sprite_lists['all_ground'])):
+            self._data.vel_x = 0.0
+            self._data.vel_y = 0.0
+
+            _target = self._source.p_hitbox.bottom_collisions[0]
+            self._data.top = _target.top
+            self._data.left = _target.right
+
+            self._data.direction = -1.0
+            self._data.at_ledge = True
+            self._switch.set_state("ledge_hold")
+
+
+
     def p_jump(self, _button: Button):
         self._data.vel_y = self._data.c_base_jump_speed * _button.pressed
         self._data.forgiven_edge_frames = 0
@@ -198,8 +226,6 @@ class JumpState(PlayerState):
         _acc_y = -self._data.c_base_gravity * Clock.delta_time
         if Input.get_button("JUMP"):
             _acc_y = -self._data.c_jump_gravity * Clock.delta_time
-
-        print(_acc_y)
 
         self._data.acc = _acc_x, _acc_y
         self._data.vel_x += _acc_x
@@ -517,6 +543,7 @@ class LedgeHoldState(PlayerState):
         pass
 
     def p_find_state(self):
+        print(self._data.on_right, self._data.on_left, self._data.direction)
         if self._data.on_ground:
             self._data.at_ledge = False
             self._data.blocked_ledge_frames = Clock.frame
@@ -533,8 +560,8 @@ class LedgeHoldState(PlayerState):
         if self._data.on_right and not self._data.on_left:
             _acc_y = self._data.c_base_jump_speed
             if Input.get_button("DASH"):
-                _acc_y = self._data.c_dash_jump_speed
-            self._data.vel_y = _button.pressed * _acc_y * 1.5
+                _acc_y = self._data.c_dash_jump_speed * 1.5
+            self._data.vel_y = _button.pressed * _acc_y
 
             self._data.vel_x = -self._data.c_base_jump_speed * 0.5
             self._data.forgiven_edge_frames = 0
@@ -543,8 +570,8 @@ class LedgeHoldState(PlayerState):
         elif self._data.on_left and not self._data.on_right:
             _acc_y = self._data.c_base_jump_speed
             if Input.get_button("DASH"):
-                _acc_y = self._data.c_dash_jump_speed
-            self._data.vel_y = _button.pressed * _acc_y * 1.5
+                _acc_y = self._data.c_dash_jump_speed * 1.5
+            self._data.vel_y = _button.pressed * _acc_y
 
             self._data.vel_x = self._data.c_base_jump_speed * 0.5
             self._data.forgiven_edge_frames = 0
@@ -552,10 +579,9 @@ class LedgeHoldState(PlayerState):
             return self._switch.set_state("jump")
 
     def p_crouch(self, _button: Button):
-        if _button:
-            self._data.at_ledge = False
-            self._data.blocked_ledge_frames = Clock.frame
-            self._switch.set_state("wall_slide")
+        self._data.at_ledge = False
+        self._data.blocked_ledge_frames = Clock.frame
+        self._switch.set_state("wall_slide")
 
     def p_horizontal(self, _value: float):
         if _value:

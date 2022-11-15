@@ -85,8 +85,8 @@ class PlayerCharacter:
     def draw(self):
         self._sprite.draw(pixelated=True)
 
-        # self._hitbox.debug_draw()
-        self._sprite.draw_hit_box((255, 255, 255), 2)
+        self._hitbox.debug_draw()
+        # self._sprite.draw_hit_box((255, 255, 255), 2)
         self._states.debug_draw()
 
     def horizontal_movement(self, _value: float):
