@@ -1,4 +1,4 @@
-from typing import Tuple, List
+from typing import Tuple, List, TYPE_CHECKING
 
 from arcade import Sprite
 
@@ -15,7 +15,7 @@ class PlayerData:
     c_max_turn_air: float = 60.0 * TILE_SIZE
 
     c_base_jump_speed: float = 12.0 * TILE_SIZE
-    c_dash_jump_speed: float = 16.0 * TILE_SIZE
+    c_dash_jump_speed: float = 24.0 * TILE_SIZE
 
     c_max_vel: float = 8.0 * TILE_SIZE
 
@@ -45,6 +45,8 @@ class PlayerData:
 
         self._last_ground_pos = tuple(self._source.position)
 
+        self.can_transition: bool = True
+
     def reset(self):
         self._acceleration: Tuple[float, float] = (0.0, 0.0)
         self._old_position: Tuple[float, float] = (0.0, 0.0)
@@ -59,6 +61,8 @@ class PlayerData:
 
         self.pos = (32.0 * 5, 32.0 * 5)
         self._last_ground_pos = tuple(self._source.position)
+
+        self.can_transition: bool = True
 
     def reset_to_ground(self):
         self._acceleration: Tuple[float, float] = (0.0, 0.0)
@@ -78,8 +82,13 @@ class PlayerData:
 
         self.pos = self._last_ground_pos
 
+        self.can_transition: bool = True
+
     def set_last_ground(self):
         self._last_ground_pos = self._old_position
+
+    def set_last_ground_instant(self):
+        self._last_ground_pos = self.pos
 
     # SIZE PROPERTIES
     @property

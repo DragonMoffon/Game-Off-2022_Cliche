@@ -3,6 +3,9 @@
  <grid orientation="orthogonal" width="1" height="1"/>
  <tile id="0">
   <image width="32" height="32" source="../textures/tiles/placeholder_tile.png"/>
+  <objectgroup draworder="index" id="2">
+   <object id="3" x="0" y="0" width="32" height="32"/>
+  </objectgroup>
  </tile>
  <tile id="1">
   <image width="32" height="32" source="../textures/tiles/placeholder_one_way.png"/>

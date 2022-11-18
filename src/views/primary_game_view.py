@@ -1,6 +1,6 @@
 from arcade import View, Camera
 
-from src.map.chamber import Chamber
+from src.worldmap import Map
 from src.player.player import PlayerCharacter
 
 
@@ -13,25 +13,30 @@ class PrimaryGameView(View):
         super().__init__()
         # TODO: remove placeholder variables with proper initialization
 
-        self._placeholder_chamber = Chamber(":assets:/tiled_maps/placeholder_map.tmj")
-
-        self._placeholder_player = PlayerCharacter(self._placeholder_chamber)
+        self._placeholder_player = PlayerCharacter()
 
         self._placeholder_camera = Camera()
 
+        Map.initialise()
+
     def on_show_view(self):
+        if not Map.current:
+            # Map.set_room(Map['Test', 'platforming'])
+            Map.set_room(Map['JungleEdge', 'entrance'])
+
         self._placeholder_camera.viewport = (0, 0, self.window.width, self.window.height)
         self._placeholder_camera.projection = (0, self.window.width, 0, self.window.height)
 
         self._placeholder_camera.use()
+        # self._placeholder_camera.zoom = 0.5
 
     def on_update(self, delta_time: float):
         self._placeholder_player.update()
 
-        _target_pos = [self._placeholder_player.center_x - self.window.width // 2,
-                       self._placeholder_player.center_y - self.window.height // 2]
-        _target_pos[0] = max(min(_target_pos[0], self._placeholder_chamber.px_width-self.window.width), 0.0)
-        _target_pos[1] = max(min(_target_pos[1], self._placeholder_chamber.px_height-self.window.height), 0.0)
+        _target_pos = [self._placeholder_player.p_data.x - self.window.width // 2,
+                       self._placeholder_player.p_data.y - self.window.height // 2]
+        # _target_pos[0] = max(min(_target_pos[0], Map.current.px_width - self.window.width), 0.0)
+        # _target_pos[1] = max(min(_target_pos[1], Map.current.px_height - self.window.height), 0.0)
 
         self._placeholder_camera.move_to(tuple(_target_pos),
                                          0.05)
@@ -40,5 +45,5 @@ class PrimaryGameView(View):
     def on_draw(self):
         self._placeholder_camera.use()
         self.clear()
-        self._placeholder_chamber.draw_chamber()
+        Map.draw()
         self._placeholder_player.draw()

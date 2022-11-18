@@ -13,10 +13,9 @@ class EngineWindow(Window):
 
     def __init__(self):
         super().__init__(title="Game Off 2022: God Feed", update_rate=1 / 120)
+        atlas = self.ctx.default_atlas
         self.game_view = PrimaryGameView()
         Input.get_button("ESCAPE").register_press_observer(self.call_close)
-
-        self._spike_count = 0
 
     def call_close(self, button: Button):
         self.close()

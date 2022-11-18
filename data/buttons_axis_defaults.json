@@ -1,18 +1,17 @@
 {
   "Buttons": {
-    "ATTACK_UP": ["MOTION_UP"],
-    "ATTACK_DOWN": ["MOTION_DOWN"],
-    "ATTACK_LEFT": ["MOTION_RIGHT"],
-    "ATTACK_RIGHT": ["MOTION_LEFT"],
+    "ATTACK_DOWN": ["MOTION_DOWN", "DOWN"],
+    "ATTACK_LEFT": ["MOTION_LEFT", "LEFT"],
+    "ATTACK_RIGHT": ["MOTION_RIGHT", "RIGHT"],
     "SPECIAL": ["MOUSE_RIGHT_CLICK", "X"],
-    "JUMP": ["SPACE", "W", "UP"],
+    "JUMP": ["SPACE", "W"],
     "DASH": ["LSHIFT", "RSHIFT"],
-    "CROUCH": ["LCTRL", "RCTRL", "S", "DOWN"],
+    "CROUCH": ["LCTRL", "RCTRL", "S"],
     "ESCAPE": ["ESCAPE"],
     "RESET": ["R"]
   },
   "Axes": {
-    "HORIZONTAL": {"+": ["D", "RIGHT"], "-": ["A", "LEFT"]},
-    "VERTICAL": {"+": ["W", "UP"], "-": ["S", "DOWN"]}
+    "HORIZONTAL": {"+": ["D"], "-": ["A"]},
+    "VERTICAL": {"+": ["W"], "-": ["S"]}
   }
 }
