@@ -17,6 +17,8 @@ class PlayerHitbox:
         self._vertical_sensor = SpriteSolidColor(1, int(self._position.top - self._position.bottom), (255, 0, 0))
         self._ledge_sensor = SpriteSolidColor(8, 8, (0, 0, 255))
 
+        self._bottom_collisions = self._top_collisions = self._left_collisions = self._right_collisions = None
+
     def hit_spike(self, _collision_layer: SpriteList):
         return self._source.collides_with_list(_collision_layer)
 
@@ -34,33 +36,36 @@ class PlayerHitbox:
             _collisions = _sensor.collides_with_list(_collision_layer)
             if len(_collisions):
                 _collisions.sort(key=lambda sprite: sprite.center_y, reverse=True)
-                return True, _collisions[0]
-        return False, None
+                return True, _collisions
+        return False, [None]
 
     def hit_ground(self, _collision_layer: SpriteList) -> Tuple[bool, Sprite]:
         _old_check = round_point((self._position.old_x, self._position.old_bottom-1))
         _new_check = round_point((self._position.x, self._position.bottom-1))
-        _hit, _collision = self._resolve_collision(_old_check, _new_check, self._horizontal_sensor, _collision_layer)
-        return _hit, _collision
+        _hit, _collisions = self._resolve_collision(_old_check, _new_check, self._horizontal_sensor, _collision_layer)
+        self._bottom_collisions = _collisions
+        return _hit, _collisions[0]
 
     def hit_ciel(self, _collision_layer: SpriteList) -> Tuple[bool, Sprite]:
         _old_check = round_point((self._position.old_x, self._position.old_top+1))
         _new_check = round_point((self._position.x, self._position.top+1))
-        _hit, _collision = self._resolve_collision(_old_check, _new_check, self._horizontal_sensor, _collision_layer)
-        return _hit, _collision
+        _hit, _collisions = self._resolve_collision(_old_check, _new_check, self._horizontal_sensor, _collision_layer)
+        self._top_collisions = _collisions
+        return _hit, _collisions[0]
 
     def hit_left(self, _collision_layer: SpriteList) -> Tuple[bool, Sprite]:
         _old_check = round_point((self._position.old_left-1, self._position.old_y))
         _new_check = round_point((self._position.left-1, self._position.y))
-        _hit, _collision = self._resolve_collision(_old_check, _new_check, self._vertical_sensor, _collision_layer)
-
-        return _hit, _collision
+        _hit, _collisions = self._resolve_collision(_old_check, _new_check, self._vertical_sensor, _collision_layer)
+        self._left_collisions = _collisions
+        return _hit, _collisions[0]
 
     def hit_right(self, _collision_layer: SpriteList) -> Tuple[bool, Sprite]:
         _old_check = round_point((self._position.old_right+1, self._position.old_y))
         _new_check = round_point((self._position.right+1, self._position.y))
-        _hit, _collision = self._resolve_collision(_old_check, _new_check, self._vertical_sensor, _collision_layer)
-        return _hit, _collision
+        _hit, _collisions = self._resolve_collision(_old_check, _new_check, self._vertical_sensor, _collision_layer)
+        self._right_collisions = _collisions
+        return _hit, _collisions[0]
 
     def check_ledge_vertical_left(self, _collision_layer: SpriteList):
         _old_check = round_point((self._position.old_left - 9.0, self._position.old_top + 9.0))
@@ -79,14 +84,19 @@ class PlayerHitbox:
         return not _ledge_hit
 
     def check_ledge_horizontal_left(self, _collision_layer: SpriteList):
-        _old_check = round_point((self._position.old_left - 9.0, self._position.old_bottom - 9.0))
-        _new_check = round_point((self._position.left - 9.0, self._position.old_bottom - 9.0))
+        _old_check = round_point((self._position.old_left - 7.0, self._position.old_bottom - 9.0))
+        _new_check = round_point((self._position.left - 7.0, self._position.old_bottom - 9.0))
+        _ledge_hit, _ledge_collision = self._resolve_collision(_old_check, _new_check,
+                                                               self._ledge_sensor, _collision_layer)
+        return not _ledge_hit
+
+    def check_ledge_horizontal_right(self, _collision_layer: SpriteList):
+        _old_check = round_point((self._position.old_right + 7.0, self._position.old_bottom - 9.0))
+        _new_check = round_point((self._position.right + 7.0, self._position.bottom - 9.0))
         _ledge_hit, _ledge_collision = self._resolve_collision(_old_check, _new_check,
                                                                self._ledge_sensor, _collision_layer)
 
-    def check_ledge_horizontal_right(self, _collision_layer: SpriteList):
-        _old_check = round_point((self._position.old_right + 9.0, self._position.old_bottom - 9.0))
-        _new_check = round_point((self._position.right + 9.0, self._position.bottom - 9.0))
+        return not _ledge_hit
 
     def debug_draw(self):
         self._horizontal_sensor.position = self._position.old_x, self._position.old_bottom-1
@@ -117,6 +127,22 @@ class PlayerHitbox:
                                        self._position.top + 9)
         self._ledge_sensor.draw(pixelated=True)
 
-        self._ledge_sensor.position = (self._position.x + (half_width + 9) * self._position.direction,
+        self._ledge_sensor.position = (self._position.x + (half_width + 7) * self._position.direction,
                                        self._position.bottom - 9)
         self._ledge_sensor.draw(pixelated=True)
+
+    @property
+    def bottom_collisions(self):
+        return self._bottom_collisions
+
+    @property
+    def top_collisions(self):
+        return self._top_collisions
+
+    @property
+    def left_collisions(self):
+        return self._left_collisions
+
+    @property
+    def right_collisions(self):
+        return self._right_collisions

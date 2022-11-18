@@ -1,4 +1,4 @@
-from typing import Tuple, List
+from typing import Tuple, List, TYPE_CHECKING
 
 from arcade import Sprite
 
@@ -14,17 +14,19 @@ class PlayerData:
     c_max_dec_air: float = 45.0 * TILE_SIZE
     c_max_turn_air: float = 60.0 * TILE_SIZE
 
-    c_max_vel: float = 8.0 * TILE_SIZE
-    c_max_vel_sprint: float = 15.0 * TILE_SIZE
-    c_max_vel_air: float = 15.0 * TILE_SIZE
+    c_base_jump_speed: float = 12.0 * TILE_SIZE
+    c_dash_jump_speed: float = 24.0 * TILE_SIZE
 
-    c_slide_drag: float = 0.5 * TILE_SIZE
-    c_jump_gravity: float = 24.0 * TILE_SIZE
+    c_max_vel: float = 8.0 * TILE_SIZE
+
+    c_jump_gravity: float = 22.0 * TILE_SIZE
     c_base_gravity: float = 32.0 * TILE_SIZE
+    c_up_slide_gravity: float = 40.0 * TILE_SIZE
+    c_down_slide_gravity: float = 24.0 * TILE_SIZE
 
     c_edge_buffer_frames: int = 6
     c_jump_buffer_frames: int = 8
-    c_slide_buffer_frames: int = 16
+    c_dash_buffer_frames: int = 16
     c_ledge_buffer_frames: int = 4
 
     def __init__(self, source: Sprite):
@@ -35,8 +37,7 @@ class PlayerData:
 
         self.direction: float = 1.0
 
-        self.on_ground = self.on_ciel = self.on_left = self.on_right = False
-        self.in_spawn_zone = self.at_ledge = self.sliding = False
+        self.on_ground = self.on_ciel = self.on_left = self.on_right = self.in_spawn_zone = self.at_ledge = False
 
         self.forgiven_jump_frames: int = 0
         self.forgiven_edge_frames: int = 0
@@ -44,20 +45,24 @@ class PlayerData:
 
         self._last_ground_pos = tuple(self._source.position)
 
+        self.can_transition: bool = True
+
     def reset(self):
         self._acceleration: Tuple[float, float] = (0.0, 0.0)
         self._old_position: Tuple[float, float] = (0.0, 0.0)
 
         self.direction: float = 1.0
 
-        self.on_ground = self.on_ciel = self.on_left = self.on_right = self.at_ledge = self.sliding = False
+        self.on_ground = self.on_ciel = self.on_left = self.on_right = self.in_spawn_zone = self.at_ledge = False
 
         self.forgiven_jump_frames: int = 0
         self.forgiven_edge_frames: int = 0
         self.blocked_ledge_frames: int = 0
 
         self.pos = (32.0 * 5, 32.0 * 5)
-        self._last_ground_pos = (32.0 * 5.0, 32.0 * 5.0)
+        self._last_ground_pos = tuple(self._source.position)
+
+        self.can_transition: bool = True
 
     def reset_to_ground(self):
         self._acceleration: Tuple[float, float] = (0.0, 0.0)
@@ -65,7 +70,7 @@ class PlayerData:
 
         self.direction: float = 1.0
 
-        self.on_ground = self.on_ciel = self.on_left = self.on_right = self.at_ledge = self.sliding = False
+        self.on_ground = self.on_ciel = self.on_left = self.on_right = self.in_spawn_zone = self.at_ledge = False
 
         self.forgiven_jump_frames: int = 0
         self.forgiven_edge_frames: int = 0
@@ -77,8 +82,13 @@ class PlayerData:
 
         self.pos = self._last_ground_pos
 
+        self.can_transition: bool = True
+
     def set_last_ground(self):
         self._last_ground_pos = self._old_position
+
+    def set_last_ground_instant(self):
+        self._last_ground_pos = self.pos
 
     # SIZE PROPERTIES
     @property
