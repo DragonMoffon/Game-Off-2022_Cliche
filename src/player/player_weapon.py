@@ -93,6 +93,9 @@ class DownAttack(PlayerAttack):
                 self._hit = PlayerHit()
                 self._hit.bottom = enemy_collisions[0].top
                 self._hit.center_x = self._data.x
+
+                Map.current.enemies.enemy_hit(enemy_collisions[0])
+
                 if Input.get_button("DASH"):
                     print("dash slash")
                     return [self._data.vel_x // 1.5, abs(self._data.vel_x) * 1.5 + self.c_knockback]
@@ -129,6 +132,8 @@ class RightAttack(PlayerAttack):
                 self._hit.angle = 90.0
                 self._hit.right = enemy_collisions[0].left
                 self._hit.center_y = self._data.y
+
+                Map.current.enemies.enemy_hit(enemy_collisions[0])
 
                 if Input.get_button("DASH"):
                     print("dash slash")
@@ -168,6 +173,8 @@ class LeftAttacK(PlayerAttack):
                 self._hit.angle = -90.0
                 self._hit.left = enemy_collisions[0].right
                 self._hit.center_y = self._data.y
+
+                Map.current.enemies.enemy_hit(enemy_collisions[0])
 
                 if Input.get_button("DASH"):
                     print("dash slash")

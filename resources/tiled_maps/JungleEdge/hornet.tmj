@@ -162,15 +162,36 @@
          "objects":[
                 {
                  "class":"",
-                 "gid":11,
+                 "gid":12,
                  "height":128,
-                 "id":5,
-                 "name":"",
+                 "id":6,
+                 "name":"Nest_1",
+                 "properties":[
+                        {
+                         "name":"health",
+                         "type":"int",
+                         "value":-1
+                        }, 
+                        {
+                         "name":"spawn_max_dist",
+                         "type":"float",
+                         "value":2.5
+                        }, 
+                        {
+                         "name":"spawn_target",
+                         "type":"string",
+                         "value":"800 288"
+                        }, 
+                        {
+                         "name":"type",
+                         "type":"string",
+                         "value":"nest"
+                        }],
                  "rotation":0,
                  "visible":true,
                  "width":128,
-                 "x":704,
-                 "y":384
+                 "x":576,
+                 "y":256
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -365,10 +386,10 @@
          "y":0
         }],
  "nextlayerid":9,
- "nextobjectid":6,
+ "nextobjectid":8,
  "orientation":"orthogonal",
  "renderorder":"right-down",
- "tiledversion":"1.9.1",
+ "tiledversion":"1.9.2",
  "tileheight":32,
  "tilesets":[
         {

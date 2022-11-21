@@ -13,9 +13,33 @@
             "scaleInDock": 1,
             "scaleInEditor": 1
         },
-        "://automap-tiles.tsx": {
+        ":/automap-tiles.tsx": {
             "dynamicWrapping": false,
             "scaleInDock": 1
+        },
+        "JungleEdge/all.tmj": {
+            "scale": 0.35,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 1314.2857142857142,
+                "y": 1217.142857142857
+            }
+        },
+        "JungleEdge/boar.tmj": {
+            "scale": 0.7823529411764705,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 573.9097744360903,
+                "y": 544.5112781954888
+            }
+        },
+        "JungleEdge/combined.tmj": {
+            "scale": 0.6045454545454545,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 449.9248120300754,
+                "y": 704.6616541353384
+            }
         },
         "JungleEdge/entrance - Copy.tmx": {
             "scale": 1.6762834821428572,
@@ -23,6 +47,14 @@
             "viewCenter": {
                 "x": 448.31319284929583,
                 "y": 256.5198575185592
+            }
+        },
+        "JungleEdge/entrance.tmj": {
+            "scale": 1.1446180555555556,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 576.6115577127256,
+                "y": 320.63097224328834
             }
         },
         "JungleEdge/entrance.tmx": {
@@ -36,8 +68,41 @@
                 "y": 261.99999999999994
             }
         },
+        "JungleEdge/hornet.tmj": {
+            "expandedObjectLayers": [
+                8
+            ],
+            "scale": 1.1446180555555556,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 529.4342484453208,
+                "y": 313.6417412407098
+            }
+        },
         "JungleEdge/placeholder_tileset.tsx": {
             "scaleInDock": 1
+        },
+        "JungleEdge/snake.tmj": {
+            "expandedObjectLayers": [
+                8
+            ],
+            "scale": 1.1446180555555556,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 576.6115577127256,
+                "y": 320.63097224328834
+            }
+        },
+        "JungleEdge/strike.tmj": {
+            "expandedObjectLayers": [
+                8
+            ],
+            "scale": 0.6045454545454545,
+            "selectedLayer": 5,
+            "viewCenter": {
+                "x": 449.9248120300754,
+                "y": 704.6616541353384
+            }
         },
         "JungleEdge/tmx/all.tmx": {
             "expandedObjectLayers": [
@@ -126,6 +191,22 @@
                 "y": 995.3333333333333
             }
         },
+        "Test/combat.tmj": {
+            "scale": 0.6646169354838709,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 993.0532382830276,
+                "y": 609.3735780373123
+            }
+        },
+        "Test/platforming.tmj": {
+            "scale": 0.38,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 1281.578947368421,
+                "y": 1121.0526315789475
+            }
+        },
         "Test/tmx/96x96_decorations.tsx": {
             "scaleInDock": 1
         },
@@ -189,9 +270,9 @@
             "scaleInEditor": 1
         }
     },
-    "last.exportedFilePath": "C:/Users/Playtech/Desktop/Code/Python/Game-Off-2022_Cliche/resources/tiled_maps/Test",
+    "last.exportedFilePath": "C:/Users/happy/Programing/Game-Off-2022_Cliche/resources/tiled_maps/JungleEdge",
     "last.externalTilesetPath": "C:/Users/Playtech/Desktop/Code/Python/Game-Off-2022_Cliche/resources/tiled_maps",
-    "last.imagePath": "C:/Users/Playtech/Desktop/Code/Python/Game-Off-2022_Cliche/resources/textures/characters",
+    "last.imagePath": "C:/Users/happy/Programing/Game-Off-2022_Cliche/resources/textures/characters",
     "last.worldFilePath": "C:/Users/Playtech/Desktop/Code/Python/Game-Off-2022_Cliche/resources/tiled_maps",
     "loadedWorlds": [
     ],
@@ -206,19 +287,20 @@
         "placeholder_map.tmx"
     ],
     "project": "Game-Off-2022_Cliche.tiled-project",
-    "property.type": "string",
+    "property.type": "float",
     "recentFiles": [
+        "JungleEdge/hornet.tmj",
+        "Test/combat.tmj",
+        "JungleEdge/strike.tmj",
+        "JungleEdge/snake.tmj",
+        "JungleEdge/boar.tmj",
+        "Test/platforming.tmj",
+        "JungleEdge/combined.tmj",
+        "JungleEdge/entrance.tmj",
+        "JungleEdge/all.tmj",
         "JungleEdge/tmx/entrance.tmx",
         "JungleEdge/tmx/all.tmx",
-        "Test/tmx/placeholder_map.tmx",
-        "placeholder_map.tmx",
-        "JungleEdge/tmx/boar.tmx",
-        "JungleEdge/entrance.tmx",
-        "JungleEdge/tmx/coiled_snake.tmx",
-        "JungleEdge/entrance - Copy.tmx",
-        "96x96_decorations.tsx",
-        "placeholder_tileset.tsx",
-        "placeholder_map.tmj"
+        "Test/tmx/placeholder_map.tmx"
     ],
     "tileset.lastUsedFormat": "tsx",
     "tileset.tileSize": {

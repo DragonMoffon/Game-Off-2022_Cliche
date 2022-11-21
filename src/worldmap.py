@@ -98,30 +98,32 @@ class Room:
 
         # TODO: REMOVE MAP and ONLY STORE NECESSARY DATA
         self._map = _map
+        self._layers = {_layer.name: (_layer, _map.sprite_lists.get(_layer.name, SpriteList(lazy=True)))
+                        for _index, _layer in enumerate(_map.tiled_map.layers)}
 
         self._tile_width = _map.width
         self._tile_height = _map.height
 
         self._transitions: Dict[int, Transition] = dict()
-        _transition_list = _map.sprite_lists.pop('transitions')
-        for _index, _object in enumerate(_map.tiled_map.layers[1].tiled_objects):
+        _transition_list = self._layers['transitions'][1]
+        for _index, _object in enumerate(self._layers['transitions'][0].tiled_objects):
             _properties = _object.properties
             self._transitions[_properties['entrance id']] = Transition(_properties, _transition_list[_index])
 
-        self._dangers: Dict[str, SpriteList] = {"spikes": _map.sprite_lists.pop('spikes')}
-        self._enemies: EnemyManager = EnemyManager(_map.sprite_lists.get('enemies', SpriteList()))
+        self._dangers: Dict[str, SpriteList] = {"spikes": self._layers['spikes'][1]}
+        self._enemies: EnemyManager = EnemyManager(*self._layers['enemies'])
 
-        self._ground: Dict[str, SpriteList] = {"ground": _map.sprite_lists.pop('ground'),
-                                               "one_way": _map.sprite_lists.pop('one_way')}
+        self._ground: Dict[str, SpriteList] = {"ground": self._layers['ground'][1],
+                                               "one_way": self._layers['one_way'][1]}
         _all_ground = SpriteList(use_spatial_hash=True)
         _all_ground.extend(self._ground['ground'])
         _all_ground.extend(self._ground['one_way'])
         self._ground['all_ground'] = _all_ground
 
-        self._decorations: Dict[str, SpriteList] = {"background": _map.sprite_lists.pop('background'),
-                                                    "decorations": _map.sprite_lists.pop('decorations')}
+        self._decorations: Dict[str, SpriteList] = {"background": self._layers['background'][1],
+                                                    "decorations": self._layers['decorations'][1]}
 
-        self._spawn_zones: SpriteList = _map.sprite_lists.pop('spawn_zones')
+        self._spawn_zones: SpriteList = self._layers['spawn_zones'][1]
 
     def __repr__(self):
         return f"{self._region}: {self._name}"
@@ -149,6 +151,12 @@ class Room:
         for transition in self._transitions.values():
             if transition.check(_other):
                 return transition
+
+    def process_enemy_logic(self):
+        self._enemies.process_enemy_logic()
+
+    def hit_enemy(self, enemy_sprite):
+        pass
 
     # Sprite lists and Dicts
     @property

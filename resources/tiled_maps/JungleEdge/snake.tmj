@@ -132,7 +132,7 @@
                  "gid":2147483657,
                  "height":128,
                  "id":5,
-                 "name":"",
+                 "name":"snake_1",
                  "properties":[
                         {
                          "name":"type",
@@ -341,7 +341,7 @@
  "nextobjectid":6,
  "orientation":"orthogonal",
  "renderorder":"right-down",
- "tiledversion":"1.9.1",
+ "tiledversion":"1.9.2",
  "tileheight":32,
  "tilesets":[
         {

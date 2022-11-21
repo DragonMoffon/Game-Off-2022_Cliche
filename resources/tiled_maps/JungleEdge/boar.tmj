@@ -146,7 +146,13 @@
                  "gid":2147483658,
                  "height":128,
                  "id":5,
-                 "name":"",
+                 "name":"boar_1",
+                 "properties":[
+                        {
+                         "name":"type",
+                         "type":"string",
+                         "value":"boar"
+                        }],
                  "rotation":0,
                  "visible":true,
                  "width":128,
@@ -419,7 +425,7 @@
  "nextobjectid":6,
  "orientation":"orthogonal",
  "renderorder":"right-down",
- "tiledversion":"1.9.1",
+ "tiledversion":"1.9.2",
  "tileheight":32,
  "tilesets":[
         {

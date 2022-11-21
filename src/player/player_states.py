@@ -64,13 +64,13 @@ class PlayerState:
     # Attack Observer Functions
 
     def p_left_attack(self, _button: Button):
-        print("no left attack")
+        pass
 
     def p_right_attack(self, _button: Button):
-        print("no right attack")
+        pass
 
     def p_down_attack(self, _button: Button):
-        print("no down attack")
+        pass
 
     @property
     def name(self):
@@ -155,11 +155,9 @@ class StandState(PlayerState):
 
     def p_left_attack(self, _button: Button):
         self._source.p_weapon.attack_left()
-        print("left attack")
 
     def p_right_attack(self, _button: Button):
         self._source.p_weapon.attack_right()
-        print("right attack")
 
 
 class RunState(PlayerState):
@@ -226,11 +224,11 @@ class RunState(PlayerState):
 
     def p_left_attack(self, _button: Button):
         self._source.p_weapon.attack_left()
-        print("left attack")
+
 
     def p_right_attack(self, _button: Button):
         self._source.p_weapon.attack_right()
-        print("right attack")
+
 
 
 class JumpState(PlayerState):
@@ -338,15 +336,12 @@ class JumpState(PlayerState):
 
     def p_left_attack(self, _button: Button):
         self._source.p_weapon.attack_left()
-        print("left attack")
 
     def p_right_attack(self, _button: Button):
         self._source.p_weapon.attack_right()
-        print("right attack")
 
     def p_down_attack(self, _button: Button):
         self._source.p_weapon.attack_downward()
-        print("down attack")
 
 
 class FallState(PlayerState):
@@ -464,15 +459,12 @@ class FallState(PlayerState):
 
     def p_left_attack(self, _button: Button):
         self._source.p_weapon.attack_left()
-        print("left attack")
 
     def p_right_attack(self, _button: Button):
         self._source.p_weapon.attack_right()
-        print("right attack")
 
     def p_down_attack(self, _button: Button):
         self._source.p_weapon.attack_downward()
-        print("down attack")
 
 
 class WallSlideState(PlayerState):
