@@ -18,7 +18,7 @@ class PlayerHit(Sprite):
 
     def __init__(self):
         if not self.c_hit_texture:
-            self.c_hit_texture = load_texture(":assets:/textures/characters/placeholder_hit.png")
+            self.c_hit_texture = load_texture(":assets:/textures/particles/placeholder_hit.png")
         super().__init__()
         self.texture = self.c_hit_texture
 
@@ -193,14 +193,14 @@ class LeftAttacK(PlayerAttack):
 
 
 class PlayerWeapon:
-    c_attack_delay: int = 16
+    c_attack_delay: int = 32
 
     def __init__(self, _data: PlayerData):
         self._data: PlayerData = _data
 
-        self._side_swipe = load_texture(":assets:/textures/characters/placeholder_player_attack.png",
+        self._side_swipe = load_texture(":assets:/textures/particles/placeholder_player_attack.png",
                                         width=128, height=128)
-        self._down_swipe = load_texture(":assets:/textures/characters/placeholder_player_attack.png",
+        self._down_swipe = load_texture(":assets:/textures/particles/placeholder_player_attack.png",
                                         width=128, height=128, x=128)
 
         self._side_hitbox: SpriteSolidColor = SpriteSolidColor(128, 96, (255, 255, 255))

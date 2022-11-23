@@ -4,7 +4,7 @@ if TYPE_CHECKING:
 
 from arcade import Sprite, load_texture
 
-from src.player.player_data import PlayerData
+from src.player.player_data import PlayerData, Player16pxParticleAnimator
 
 from src.worldmap import Map
 
@@ -198,6 +198,8 @@ class RunState(PlayerState):
 
         if self._data.vel_x:
             self._data.direction = self._data.vel_x / abs(self._data.vel_x)
+            Player16pxParticleAnimator.add_new("puff", self._data.x, self._data.bottom + 8,
+                                               scale=(self._data.direction, 1.0))
 
     def p_find_state(self):
         _next_state = self._name
@@ -228,7 +230,6 @@ class RunState(PlayerState):
 
     def p_right_attack(self, _button: Button):
         self._source.p_weapon.attack_right()
-
 
 
 class JumpState(PlayerState):

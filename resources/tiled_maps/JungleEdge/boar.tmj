@@ -143,11 +143,21 @@
          "objects":[
                 {
                  "class":"",
-                 "gid":2147483658,
+                 "gid":10,
                  "height":128,
                  "id":5,
                  "name":"boar_1",
                  "properties":[
+                        {
+                         "name":"trot_left",
+                         "type":"float",
+                         "value":134
+                        }, 
+                        {
+                         "name":"trot_right",
+                         "type":"float",
+                         "value":768
+                        }, 
                         {
                          "name":"type",
                          "type":"string",

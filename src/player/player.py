@@ -1,13 +1,14 @@
-from arcade import Sprite, SpriteSolidColor, SpriteList, load_texture
+from arcade import Sprite, load_texture
 
-from src.player.player_data import PlayerData
+from src.player.player_data import PlayerData, PlayerAnimator, Player16pxParticleAnimator
 from src.player.player_hitbox import PlayerHitbox
 from src.player.player_states import PlayerStateSwitch
 from src.player.player_physics import PlayerPhysics
 from src.player.player_weapon import PlayerWeapon
 
-from src.input import Input, Button
 from src.worldmap import Map
+
+from src.input import Input, Button
 
 # TODO: Complete Input Code and Physics integration
 
@@ -21,11 +22,17 @@ class PlayerCharacter:
     def __init__(self):
         # TODO: make actual sprite and setup animations
 
-        self._sprite = Sprite(texture=load_texture(":assets:/textures/characters/placeholder_player.png"))
+        self._sprite = Sprite(texture=load_texture(":assets:/textures/characters/player/player.png"))
         self._sprite.set_hit_box(((-16, -32), (-16, 32), (16, 32), (16, -32)))
         self._data = PlayerData(self._sprite)
         self._data.bottom = 192.0
         self._data.left = 128.0
+
+        Player16pxParticleAnimator.load(":assets:/textures/particles", "placeholder_particle_16px")
+
+        # PlayerAnimator.load(":assets:/textures/characters/enemies/animations/", "boar_animation", self._sprite)
+
+        # PlayerAnimator.set_state('walk')
 
         self._weapon = PlayerWeapon(self._data)
 
@@ -79,6 +86,10 @@ class PlayerCharacter:
 
         self._check_map_transition()
 
+        Player16pxParticleAnimator.update()
+        Player16pxParticleAnimator.animate()
+        # PlayerAnimator.animate()
+
     def draw(self):
         self._sprite.draw(pixelated=True)
 
@@ -86,6 +97,7 @@ class PlayerCharacter:
         # self._sprite.draw_hit_box((255, 255, 255), 2)
         self._states.debug_draw()
         self._weapon.draw()
+        Player16pxParticleAnimator.draw()
 
     def _check_map_transition(self):
         _gate_collision = Map.current.should_transition(self._sprite)

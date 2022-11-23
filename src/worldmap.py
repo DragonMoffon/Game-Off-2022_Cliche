@@ -242,6 +242,7 @@ class GameMap:
 
     def set_room(self, _next: Room):
         self._current_room = _next
+        self._current_room.enemies.respawn()
         self._current_room.initialise()
 
     @property

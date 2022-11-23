@@ -21,8 +21,8 @@ class PrimaryGameView(View):
 
     def on_show_view(self):
         if not Map.current:
-            Map.set_room(Map['Test', 'platforming'])
-            # Map.set_room(Map['JungleEdge', 'entrance'])
+            # Map.set_room(Map['Test', 'platforming'])
+            Map.set_room(Map['JungleEdge', 'entrance'])
 
         self._camera.viewport = (0, 0, self.window.width, self.window.height)
         self._camera.projection = (0, self.window.width, 0, self.window.height)

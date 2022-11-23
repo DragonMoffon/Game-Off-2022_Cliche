@@ -7,6 +7,7 @@ from pytiled_parser import ObjectLayer
 
 from src.util import TILE_SIZE, lerp_point, sqr_dist, sqr_length, normalise, normalise_to_length
 from src.clock import Clock
+from src.animator import Animator
 
 
 class Enemy:
@@ -17,10 +18,10 @@ class Enemy:
 
     def __init__(self, _sprite: Sprite, _name: str, parent: "EnemyManager", _health: int):
         if Enemy.c_boar_textures is None:
-            Enemy.c_boar_textures = load_texture(":assets:/textures/characters/placeholder_enemies1.png")
-            Enemy.c_snake_texture = load_texture(":assets:/textures/characters/placeholder_enemies2.png")
-            Enemy.c_hornet_texture = load_texture(":assets:/textures/characters/placeholder_enemies3.png")
-            Enemy.c_hornet_nest_texture = load_texture(":assets:/textures/characters/placeholder_enemies4.png")
+            Enemy.c_boar_textures = load_texture(":assets:/textures/characters/enemies/placeholder_enemies1.png")
+            Enemy.c_snake_texture = load_texture(":assets:/textures/characters/enemies/placeholder_enemies2.png")
+            Enemy.c_hornet_texture = load_texture(":assets:/textures/characters/enemies/hornet.png")
+            Enemy.c_hornet_nest_texture = load_texture(":assets:/textures/characters/enemies/placeholder_enemies4.png")
 
         # Enemy renderer (arcade.Sprite)
         self._sprite = _sprite
@@ -38,6 +39,9 @@ class Enemy:
 
         self._death_listeners: Set[classmethod] = set()
 
+        # animator
+        self._animator = Animator()
+
     def hit(self):
         raise NotImplementedError()
 
@@ -46,6 +50,9 @@ class Enemy:
 
     def update(self):
         raise NotImplementedError()
+
+    def respawn(self):
+        self._reset_health()
 
     def append_death_listener(self, listener):
         self._death_listeners.add(listener)
@@ -59,6 +66,9 @@ class Enemy:
         for listener in tuple(self._death_listeners):
             listener(self)
 
+    def _reset_health(self):
+        self._health = self._max_health
+
     @property
     def name(self):
         return self._name
@@ -69,27 +79,40 @@ class Enemy:
 
 
 class BoarEnemy(Enemy):
+    c_max_vel: float = 3.0 * TILE_SIZE
 
     def __init__(self, _sprite: Sprite, _name: str, _parent: "EnemyManager", **data):
         super().__init__(_sprite, _name, _parent, data.get('health', 4))
 
-        self._trot_target = self._sprite.center_x
-        self._trot_min = data.get('trot_min', 0.0)
-        self._trot_max = data.get('trot_max', 0.0)
+        self._trot_left = data.get('trot_left', self._sprite.center_x)
+        self._trot_right = data.get('trot_right', self._sprite.center_y)
+        self._direction = 1.0
+        self._vel = 0.0
+
+        self._animator.load(":assets:/textures/characters/enemies/animations/", "boar_animation", self._sprite)
+        self._animator.set_state('walk')
 
     def hit(self):
-        print(f"hit {self.name}")
+        if self._max_health > 0:
+            self._health -= 1
+            if not self._health:
+                self.die()
 
     def process_logic(self):
-        diff = self._sprite.center_x - self._trot_target
-        if diff:
-            pass
-        else:
-            pass
-        pass
+        if self._trot_right - self._trot_left:
+            if self._sprite.right >= self._trot_right and self._direction > 0:
+                self._direction = -1.0
+                self._sprite.scale_xy = (-1.0, 1.0)
+            elif self._sprite.left <= self._trot_left and self._direction < 0:
+                self._direction = 1.0
+                self._sprite.scale_xy = (1.0, 1.0)
+
+            self._vel = self.c_max_vel * self._direction
 
     def update(self):
-        pass
+        self._sprite.center_x += self._vel * Clock.delta_time
+
+        self._animator.animate()
 
 
 class HornetEnemy(Enemy):
@@ -115,6 +138,10 @@ class HornetEnemy(Enemy):
             self._health -= 1
             if not self._health:
                 self.die()
+
+    def respawn(self):
+        if self.temp:
+            self.die()
 
     def process_logic(self):
         _diff = self._circle_target[0] - self._sprite.center_x, self._circle_target[1] - self._sprite.center_y
@@ -152,7 +179,10 @@ class HornetNestEnemy(Enemy):
         self._spawn: Dict[str, HornetEnemy] = dict()
 
     def hit(self):
-        print(f"hit {self.name}")
+        if self._max_health > 0:
+            self._health -= 1
+            if not self._health:
+                self.die()
 
     def process_logic(self):
         if not len(self._spawn):
@@ -185,7 +215,11 @@ class SnakeEnemy(Enemy):
         super().__init__(_sprite, _name, _parent, data.get('health', -1))
 
     def hit(self):
-        print(f"hit {self.name}")
+
+        if self._max_health > 0:
+            self._health -= 1
+            if not self._health:
+                self.die()
 
     def process_logic(self):
         pass
@@ -220,7 +254,6 @@ class EnemyManager:
             _enemy.update()
 
     def enemy_killed(self, _enemy: Enemy):
-        print(_enemy)
         self._enemies.pop(_enemy.name)
         self._enemy_sprite_map.pop(_enemy.sprite)
         self._sprites.remove(_enemy.sprite)
@@ -237,6 +270,17 @@ class EnemyManager:
 
     def enemy_hit(self, _enemy_sprite: Sprite):
         self._enemy_sprite_map[_enemy_sprite].hit()
+
+    def respawn(self):
+        for _enemy in tuple(self._killed_enemies.values()):
+            self._enemies[_enemy.name] = _enemy
+            self._enemy_sprite_map[_enemy.sprite] = _enemy
+
+            self._sprites.append(_enemy.sprite)
+
+            _enemy.respawn()
+
+        self._killed_enemies.clear()
 
     @property
     def sprites(self):

@@ -102,15 +102,25 @@
          "objects":[
                 {
                  "class":"",
-                 "gid":2147483659,
+                 "gid":11,
                  "height":128,
                  "id":9,
-                 "name":"",
+                 "name":"boar_1",
                  "properties":[
                         {
                          "name":"health",
                          "type":"int",
                          "value":-1
+                        }, 
+                        {
+                         "name":"trot_left",
+                         "type":"float",
+                         "value":188
+                        }, 
+                        {
+                         "name":"trot_right",
+                         "type":"float",
+                         "value":1280
                         }, 
                         {
                          "name":"type",
@@ -128,7 +138,7 @@
                  "gid":2147483658,
                  "height":128,
                  "id":11,
-                 "name":"",
+                 "name":"snake_1",
                  "properties":[
                         {
                          "name":"health",
@@ -149,9 +159,9 @@
                 {
                  "class":"",
                  "gid":2147483660,
-                 "height":128,
+                 "height":48,
                  "id":12,
-                 "name":"",
+                 "name":"hornet_1",
                  "properties":[
                         {
                          "name":"health",
@@ -170,9 +180,9 @@
                         }],
                  "rotation":0,
                  "visible":true,
-                 "width":128,
-                 "x":448,
-                 "y":416
+                 "width":48,
+                 "x":512,
+                 "y":320
                 }],
          "opacity":1,
          "type":"objectgroup",

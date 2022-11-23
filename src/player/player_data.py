@@ -3,6 +3,11 @@ from typing import Tuple, List, TYPE_CHECKING
 from arcade import Sprite
 
 from src.util import TILE_SIZE
+from src.animator import Animator, TempAnimatorManager
+
+
+PlayerAnimator = Animator()
+Player16pxParticleAnimator = TempAnimatorManager()
 
 
 class PlayerData:
