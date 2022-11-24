@@ -147,6 +147,16 @@
                  "name":"boar_1",
                  "properties":[
                         {
+                         "name":"trot_left",
+                         "type":"float",
+                         "value":480
+                        }, 
+                        {
+                         "name":"trot_right",
+                         "type":"float",
+                         "value":480
+                        }, 
+                        {
                          "name":"type",
                          "type":"string",
                          "value":"boar"

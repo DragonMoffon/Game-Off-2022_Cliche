@@ -7,7 +7,10 @@ from pytiled_parser import ObjectLayer
 
 from src.util import TILE_SIZE, lerp_point, sqr_dist, sqr_length, normalise, normalise_to_length
 from src.clock import Clock
+from src.player.player_data import PlayerData
 from src.animator import Animator
+
+from arcade import draw_line
 
 
 class Enemy:
@@ -77,6 +80,9 @@ class Enemy:
     def sprite(self):
         return self._sprite
 
+    def debug_draw(self):
+        pass
+
 
 class BoarEnemy(Enemy):
     c_max_vel: float = 3.0 * TILE_SIZE
@@ -85,9 +91,14 @@ class BoarEnemy(Enemy):
         super().__init__(_sprite, _name, _parent, data.get('health', 4))
 
         self._trot_left = data.get('trot_left', self._sprite.center_x)
-        self._trot_right = data.get('trot_right', self._sprite.center_y)
+        self._trot_right = data.get('trot_right', self._sprite.center_x)
         self._direction = 1.0
         self._vel = 0.0
+
+        self._player_detected: bool = False
+        self._state: str = "trot"
+
+        self._timer: float = 0.0
 
         self._animator.load(":assets:/textures/characters/enemies/animations/", "boar_animation", self._sprite)
         self._animator.set_state('walk')
@@ -99,6 +110,13 @@ class BoarEnemy(Enemy):
                 self.die()
 
     def process_logic(self):
+        if not self._player_detected and self._state == "trot":
+            self._player_detected = (((self._trot_left < self._parent.c_player_data.right < self._sprite.center_x and
+                                       self._direction < 0) or
+                                      (self._trot_right > self._parent.c_player_data.left > self._sprite.center_x and
+                                       self._direction > 0)) and
+                                     abs(self._parent.c_player_data.y - self._sprite.center_y) < self._sprite.height)
+
         if self._trot_right - self._trot_left:
             if self._sprite.right >= self._trot_right and self._direction > 0:
                 self._direction = -1.0
@@ -113,6 +131,9 @@ class BoarEnemy(Enemy):
         self._sprite.center_x += self._vel * Clock.delta_time
 
         self._animator.animate()
+
+    def debug_draw(self):
+        draw_line(self._trot_left, self._sprite.center_y, self._trot_right, self._sprite.center_y, (255, 100, 100), 4)
 
 
 class HornetEnemy(Enemy):
@@ -231,6 +252,7 @@ class SnakeEnemy(Enemy):
 class EnemyManager:
     c_enemy_type_classes: Dict[str, Type[Enemy]] = {'boar': BoarEnemy, 'snake': SnakeEnemy,
                                                     'hornet': HornetEnemy, 'nest': HornetNestEnemy}
+    c_player_data: PlayerData = None
 
     def __init__(self, _layer_data: ObjectLayer, _sprites: SpriteList):
         self._sprites = _sprites

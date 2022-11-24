@@ -147,6 +147,9 @@ class Room:
         self._enemies.sprites.draw(pixelated=True)
         self._decorations['decorations'].draw(pixelated=True)
 
+        for _enemy in self._enemies.enemies.values():
+            _enemy.debug_draw()
+
     def should_transition(self, _other: Sprite):
         for transition in self._transitions.values():
             if transition.check(_other):

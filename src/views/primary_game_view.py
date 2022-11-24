@@ -3,6 +3,8 @@ from arcade import View, Camera
 from src.worldmap import Map
 from src.player.player import PlayerCharacter
 
+from src.enemies import EnemyManager
+
 
 # TODO: Write actual primary game view
 
@@ -14,6 +16,8 @@ class PrimaryGameView(View):
         # TODO: remove placeholder variables with proper initialization
 
         self._player = PlayerCharacter()
+
+        EnemyManager.c_player_data = self._player.p_data
 
         self._camera = Camera()
 

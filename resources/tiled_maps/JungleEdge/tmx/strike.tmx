@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="28" height="44" tilewidth="32" tileheight="32" infinite="0" nextlayerid="9" nextobjectid="5">
+ <editorsettings>
+  <export target="../strike.tmj" format="json"/>
+ </editorsettings>
  <tileset firstgid="1" source="../../placeholder_tileset.tsx"/>
  <tileset firstgid="6" source="../../enemies.tsx"/>
  <layer id="6" name="background" width="28" height="44">
@@ -71,6 +74,8 @@
  <objectgroup id="8" name="enemies">
   <object id="4" name="boar_1" gid="10" x="480" y="1280" width="128" height="128">
    <properties>
+    <property name="trot_left" type="float" value="480"/>
+    <property name="trot_right" type="float" value="480"/>
     <property name="type" value="boar"/>
    </properties>
   </object>
