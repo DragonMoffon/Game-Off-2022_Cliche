@@ -1,6 +1,7 @@
 .idea
-\libs
+libs/
+.libs/
 *.tiled-session
-\bin
-*\__pychache__
+bin/
+__pycache__/
 
