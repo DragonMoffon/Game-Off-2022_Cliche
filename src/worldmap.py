@@ -6,8 +6,6 @@ from os import listdir
 from arcade import tilemap, Sprite, SpriteList
 from arcade.resources import resolve_resource_path
 
-from src.enemies import EnemyManager
-
 from src.util import TILE_SIZE, DEBUG
 
 from threading import Thread
@@ -111,7 +109,6 @@ class Room:
             self._transitions[_properties['entrance id']] = Transition(_properties, _transition_list[_index])
 
         self._dangers: Dict[str, SpriteList] = {"spikes": self._layers['spikes'][1]}
-        self._enemies: EnemyManager = EnemyManager(*self._layers['enemies'])
 
         self._ground: Dict[str, SpriteList] = {"ground": self._layers['ground'][1],
                                                "one_way": self._layers['one_way'][1]}
@@ -132,8 +129,6 @@ class Room:
         for _list in self._dangers.values():
             _list.initialize()
 
-        self._enemies.sprites.initialize()
-
         for _list in self._ground.values():
             _list.initialize()
 
@@ -144,22 +139,12 @@ class Room:
         self._ground["all_ground"].draw(pixelated=True)
         for danger in self._dangers.values():
             danger.draw(pixelated=True)
-        self._enemies.sprites.draw(pixelated=True)
         self._decorations['decorations'].draw(pixelated=True)
-
-        for _enemy in self._enemies.enemies.values():
-            _enemy.debug_draw()
 
     def should_transition(self, _other: Sprite):
         for transition in self._transitions.values():
             if transition.check(_other):
                 return transition
-
-    def process_enemy_logic(self):
-        self._enemies.process_enemy_logic()
-
-    def hit_enemy(self, enemy_sprite):
-        pass
 
     # Sprite lists and Dicts
     @property
@@ -173,10 +158,6 @@ class Room:
     @property
     def dangers(self):
         return self._dangers
-
-    @property
-    def enemies(self):
-        return self._enemies
 
     @property
     def decorations(self):
@@ -245,7 +226,6 @@ class GameMap:
 
     def set_room(self, _next: Room):
         self._current_room = _next
-        self._current_room.enemies.respawn()
         self._current_room.initialise()
 
     @property

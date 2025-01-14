@@ -180,7 +180,7 @@
                         {
                          "name":"spawn_target",
                          "type":"string",
-                         "value":"800 288"
+                         "value":"800 160"
                         }, 
                         {
                          "name":"type",
@@ -389,7 +389,7 @@
  "nextobjectid":8,
  "orientation":"orthogonal",
  "renderorder":"right-down",
- "tiledversion":"1.9.2",
+ "tiledversion":"1.9.1",
  "tileheight":32,
  "tilesets":[
         {

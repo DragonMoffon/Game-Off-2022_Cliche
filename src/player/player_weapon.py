@@ -84,29 +84,19 @@ class DownAttack(PlayerAttack):
         if not self._struck:
             self.update_position()
 
-            enemy_collisions = self.check_collision_enemies()
-
             terrain_collisions = self.check_collision_environment()
 
-            if enemy_collisions:
+            if terrain_collisions:
                 self._struck = True
                 self._hit = PlayerHit()
-                self._hit.bottom = enemy_collisions[0].top
+                self._hit.bottom = terrain_collisions[0].top
                 self._hit.center_x = self._data.x
-
-                Map.current.enemies.enemy_hit(enemy_collisions[0])
-
                 if Input.get_button("DASH"):
                     print("dash slash")
                     return [self._data.vel_x // 1.5, abs(self._data.vel_x) * 1.5 + self.c_knockback]
                 else:
                     return [self._data.vel_x, self.c_knockback]
-            elif terrain_collisions:
-                self._struck = True
-                self._hit = PlayerHit()
-                self._hit.bottom = terrain_collisions[0].top
-                self._hit.center_x = self._data.x
-                return [self._data.vel_x, self.c_knockback]
+
         return self._data.vel
 
 
@@ -122,32 +112,20 @@ class RightAttack(PlayerAttack):
         if not self._struck:
             self.update_position()
 
-            enemy_collisions = self.check_collision_enemies()
-
             terrain_collisions = self.check_collision_environment()
 
-            if enemy_collisions:
-                self._struck = True
-                self._hit = PlayerHit()
-                self._hit.angle = 90.0
-                self._hit.right = enemy_collisions[0].left
-                self._hit.center_y = self._data.y
-
-                Map.current.enemies.enemy_hit(enemy_collisions[0])
-
-                if Input.get_button("DASH"):
-                    print("dash slash")
-                    return [-abs(self._data.vel_y) * 1.5 - self.c_knockback, abs(self._data.vel_y) // 1.5]
-                else:
-                    return [-self.c_knockback, self._data.vel_y]
-            elif terrain_collisions:
+            if terrain_collisions:
                 self._struck = True
                 self._hit = PlayerHit()
                 self._hit.angle = 90.0
                 self._hit.right = terrain_collisions[0].left
                 self._hit.center_y = self._data.y
 
-                return [-self.c_knockback, self._data.vel_y]
+                if Input.get_button("DASH"):
+                    print("dash slash")
+                    return [-abs(self._data.vel_y) * 1.5 - self.c_knockback, abs(self._data.vel_y) // 1.5]
+                else:
+                    return [-self.c_knockback, self._data.vel_y]
         return self._data.vel
 
 
@@ -162,33 +140,21 @@ class LeftAttacK(PlayerAttack):
     def check_attack(self):
         if not self._struck:
             self.update_position()
-
-            enemy_collisions = self.check_collision_enemies()
-
             terrain_collisions = self.check_collision_environment()
 
-            if enemy_collisions:
-                self._struck = True
-                self._hit = PlayerHit()
-                self._hit.angle = -90.0
-                self._hit.left = enemy_collisions[0].right
-                self._hit.center_y = self._data.y
-
-                Map.current.enemies.enemy_hit(enemy_collisions[0])
-
-                if Input.get_button("DASH"):
-                    print("dash slash")
-                    return [abs(self._data.vel_y) * 1.5 + self.c_knockback, abs(self._data.vel_y) // 1.5]
-                else:
-                    return [self.c_knockback, self._data.vel_y]
-            elif terrain_collisions:
+            if terrain_collisions:
                 self._struck = True
                 self._hit = PlayerHit()
                 self._hit.angle = -90.0
                 self._hit.left = terrain_collisions[0].right
                 self._hit.center_y = self._data.y
 
-                return [self.c_knockback, self._data.vel_y]
+                if Input.get_button("DASH"):
+                    print("dash slash")
+                    return [abs(self._data.vel_y) * 1.5 + self.c_knockback, abs(self._data.vel_y) // 1.5]
+                else:
+                    return [self.c_knockback, self._data.vel_y]
+
         return self._data.vel
 
 
